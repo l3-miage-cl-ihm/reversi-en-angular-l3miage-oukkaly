@@ -55,7 +55,7 @@ Par défaut, ce service sera fourni par le module racine de l'application (voir 
 
 Modifiez la classe de ce service pour qu'elle implémente l'interface `ReversiModelInterface` spécifiée dans `src/app/data/reversi.definitions.ts`.
 
-* Définissez un signal privé readonly publiant des GameState, initialisé le avec `initialGameState` (voir `src/app/data/reversi.game.ts`). Ce signal accessible en écriture doit bien rester privé. C'est la responsabilité du service de publier de nouveaux états de jeu.
+* Définissez un signal privé readonly publiant des GameState, initialisez le avec `initialGameState` (voir `src/app/data/reversi.game.ts`). Ce signal accessible en écriture doit bien rester privé. C'est la responsabilité du service de publier de nouveaux états de jeu.
 * Dérivé en directement un signal public readonly qui se contente de publier les états de jeu publiés par le signal privé. Ce signal public est accessible en lecture seule. C'est la responsabilité des composants de s'abonner à ce signal pour être informés des changements d'état de jeu.
 * Implémentez les méthodes `play` et `restart` de l'interface `ReversiModelInterface`.
 
