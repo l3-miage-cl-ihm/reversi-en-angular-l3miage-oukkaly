@@ -8,8 +8,10 @@ import { initialGameState, tryPlay } from './data/reversi.game';
 export class ReversiService implements ReversiModelInterface {
   private readonly _sigGameState: WritableSignal<GameState> = signal<GameState>(initialGameState);
   public readonly sigGameState = computed<GameState>(() => this._sigGameState());
-  play(coord: TileCoords) { 
-    tryPlay(this.sigGameState(), coord[0], coord[1]);
+  play(coord: TileCoords) {
+    this._sigGameState.set(   
+      tryPlay(this.sigGameState(), coord[0], coord[1])
+    );
    }
   restart() { this._sigGameState.update(() => initialGameState) }
   constructor() {}

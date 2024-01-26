@@ -14,12 +14,19 @@ import { ReversiService } from './reversi.service';
 })
 export class AppComponent {
   // à compléter
-
+  userInput: TileCoords = [0,0];
+  strBoard: Signal<string>;
   constructor(private gameService : ReversiService){
-
+    this.strBoard = computed( () => BoardtoString(this.gameService.sigGameState().board))
   }
-
+  affichageCoordonee(){
+    this.gameService.play(this.userInput);
+  }
   affichageBoard(){
     return BoardtoString(this.gameService.sigGameState().board);
+  }
+  currentPlayer(){
+    const player = this.gameService.sigGameState().turn ;
+    return cToString(player)+": "+player;
   }
 }
