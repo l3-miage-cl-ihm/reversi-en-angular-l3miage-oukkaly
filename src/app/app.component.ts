@@ -4,11 +4,12 @@ import { Board, BoardtoString, GameState, TileCoords, Turn, cToString } from './
 import { produce } from 'immer';
 import { whereCanPlay } from './data/reversi.game';
 import { ReversiService } from './reversi.service';
+import { single } from 'rxjs';
 
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html', 
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -23,28 +24,28 @@ export class AppComponent {
   scoresSig: Signal<Readonly<{ Player1: number, Player2: number }>>
   playableSig: Signal<Matrix<boolean, 8,8>> ;
   readonly coupsPossibles: Signal<readonly TileCoords[]>;
-
+  testSignal : Signal<number>;
   constructor(private gameService : ReversiService){
     this.strBoard = computed( () => BoardtoString(this.gameService.sigGameState().board)); // good
+    this.testSignal = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2 ) => v2=== "Player2" ? acc2++ : acc2 , 0), 0));
+    const testSignalX = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2) => v2=== "Player1" ? acc2++ : acc2 , 0), 0));
     
     this.coupsPossibles = computed(
       () => whereCanPlay( this.gameService.sigGameState() )
     ); // good
     this.winnerSig = computed( () => {
-      return this.coupsPossibles.length === 0 ? this.isDraw() : undefined ;
+      return this.coupsPossibles().length === 0 ? this.isDraw() : undefined ;
     }
-    ); // a implémenter
-
-    this.scoresSig = computed( () => ({Player1: 2 , Player2: 2})); // good
-
+    ); 
+    this.scoresSig = computed( () => ({
+      Player1: this.testSignal() , Player2: testSignalX()})); // good
+    
     this.playableSig = computed( () => {
       const resMatrix = initMatrix(() => false, 8,8);
       const isPlayable = produce( resMatrix, mutableMatrice => {        
-        //coupsPossibles() => une liste de coord (i , j)
         this.coupsPossibles().map( x => {
           mutableMatrice[x[0]][x[1]] = true;
         });
-        // Vous devrez utiliser la fonction whereCanPlay pour savoir quelles cases de la matrice doivent être marquées comme true (jouables)
       });
     
       return isPlayable;
@@ -62,12 +63,6 @@ export class AppComponent {
     }));
 
   }
-  affichageCoordonee(){
-    this.gameService.play(this.userInput);
-  }
-  affichageBoard(){
-    return BoardtoString(this.gameService.sigGameState().board);
-  }
   currentPlayer(){
     const player = this.gameService.sigGameState().turn ;
     return cToString(player)+": "+player;
@@ -76,14 +71,13 @@ export class AppComponent {
     this.gameService.play(coor);
   }
 
-  exist(coor : TileCoords , coorGiven: TileCoords[] ): boolean{
-    let i = 0 ;
-    while( i < coorGiven.length &&  coor !== coorGiven[i] ){
-      i++;
-    } 
-    return i < coorGiven.length ;
+  
+  maMethodeX(): number{
+    return this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2 , i2) => v2=== "Player1" ? acc2++ : acc2 , 0), 0);
   }
-
+  maMethodeO(): number{
+    return this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2 , i2) => v2=== "Player2" ? acc2++ : acc2 , 0), 0);
+  }
 isDraw(): "Drawn" | Turn {
   return this.scoresSig().Player1 === this.scoresSig().Player2 ? "Drawn" : this.whoWins() ;
 }  
