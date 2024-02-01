@@ -25,20 +25,39 @@ export class AppComponent {
   playableSig: Signal<Matrix<boolean, 8,8>> ;
   readonly coupsPossibles: Signal<readonly TileCoords[]>;
   testSignal : Signal<number>;
+  testSignalX : Signal<number>;
+
   constructor(private gameService : ReversiService){
-    this.strBoard = computed( () => BoardtoString(this.gameService.sigGameState().board)); // good
-    this.testSignal = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2 ) => v2=== "Player2" ? acc2++ : acc2 , 0), 0));
-    const testSignalX = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2) => v2=== "Player1" ? acc2++ : acc2 , 0), 0));
+    
+    this.strBoard = computed( () => BoardtoString(this.gameService.sigGameState().board)); 
+
+    this.testSignal = computed<number>( () => 
+      this.gameService.sigGameState().board
+      .reduce((acc,v)=> {
+        return acc + v.reduce((acc2 , v2 ) => {
+          console.log(v2==='Player1');
+          return v2 === 'Player1' ? acc2 + 1 : acc2
+        }, 0)
+      },0));
+    /*
+    const boardV2 = computed( () => 
+      this.gameService.sigGameState().board.forEach((x) => x.map((v) => v === "Player1" ));
+    );     
+    */
+
+    this.testSignalX = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2) => v2=== 'Player2' ? acc2 + 1 : acc2 , 0), 0));
     
     this.coupsPossibles = computed(
-      () => whereCanPlay( this.gameService.sigGameState() )
+      () => whereCanPlay( this.gameService.sigGameState() ) 
     ); // good
     this.winnerSig = computed( () => {
       return this.coupsPossibles().length === 0 ? this.isDraw() : undefined ;
     }
     ); 
     this.scoresSig = computed( () => ({
-      Player1: this.testSignal() , Player2: testSignalX()})); // good
+      Player1: this.testSignal() ,
+      Player2: this.testSignalX()
+    })); // good
     
     this.playableSig = computed( () => {
       const resMatrix = initMatrix(() => false, 8,8);
