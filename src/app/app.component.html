@@ -1,8 +1,24 @@
 <h1>Reversi en Angular</h1>
-<pre>{{affichageBoard()}}
+<pre>{{strBoard()}}
     {{currentPlayer()}}
-    Joue ta mère (comme eg '3,2')
-    <input type="text" [(ngModel)]="userInput"/>
-    <button (click)="affichageCoordonee()">play</button>
-
+    Joue (ex '3,2')
+    <!--
+        <form action="affichageCoordonee()">
+            <input type="text" [(ngModel)]="userInput" [ngModelOptions]="{standalone: true}" />
+            <button type="submit" >play</button>
+        </form>
+    -->
 </pre>
+    <ul>
+    <li *ngFor="let coup of coupsPossibles()">
+        <button (click)="playAt(coup)">
+            {{coup | json}}
+        </button>
+    </li>
+</ul>
+
+<pre>
+    {{coupsPossibles().length}}
+    {{winnerSig()}}
+</pre>
+
