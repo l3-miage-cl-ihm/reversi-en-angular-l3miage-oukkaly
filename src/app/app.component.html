@@ -1,13 +1,39 @@
 <h1>Reversi en Angular</h1>
+<!-- rajouter au besoin la class Player1 ou Player2 -->
+<table class="reversi">
+    <tbody>
+        <tr *ngFor="let ligne of gameStateAll().gameState.board; index as line" >
+            <td *ngFor="let colonne of ligne; index as column">
+                <div class="token">
+                    
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    
+</table>
+<section class="info">
+    Au tour de 
+    <div class="token">
+
+    </div>
+</section>
+<section class="info"> 
+    Scores : 
+</section>
+<button (click)="restartGame()">
+    Recommencer
+</button>
+
 <pre>{{strBoard()}}
     {{currentPlayer()}}
     Joue (ex '3,2')
-    <!--
+    
         <form action="affichageCoordonee()">
             <input type="text" [(ngModel)]="userInput" [ngModelOptions]="{standalone: true}" />
             <button type="submit" >play</button>
         </form>
-    -->
+    
 </pre>
     <ul>
     <li *ngFor="let coup of coupsPossibles()">
@@ -20,7 +46,6 @@
 <pre>
     {{winnerSig()}}
     score : {{scoresSig() | json}}
-    {{testSignal()}}
     gameStateAll : {{gameStateAll() | json}}
 </pre>
 

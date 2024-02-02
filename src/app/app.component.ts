@@ -36,14 +36,10 @@ export class AppComponent {
       .reduce((acc,v)=> {
         return acc + v.reduce((acc2 , v2 ) => {
           console.log(v2==='Player1');
-          return v2 === 'Player1' ? acc2 + 1 : acc2
+          return v2 === 'Player1' ? acc2 + 1 : acc2 ;
         }, 0)
       },0));
-    /*
-    const boardV2 = computed( () => 
-      this.gameService.sigGameState().board.forEach((x) => x.map((v) => v === "Player1" ));
-    );     
-    */
+   
 
     this.testSignalX = computed<number>( () => this.gameService.sigGameState().board.reduce((acc,v)=> acc + v.reduce((acc2 , v2) => v2=== 'Player2' ? acc2 + 1 : acc2 , 0), 0));
     
@@ -60,7 +56,7 @@ export class AppComponent {
     })); // good
     
     this.playableSig = computed( () => {
-      const resMatrix = initMatrix(() => false, 8,8);
+      const resMatrix: Matrix<boolean,8,8> = initMatrix<boolean,8,8>(() => false, 8,8);
       const isPlayable = produce( resMatrix, mutableMatrice => {        
         this.coupsPossibles().map( x => {
           mutableMatrice[x[0]][x[1]] = true;
@@ -103,6 +99,10 @@ isDraw(): "Drawn" | Turn {
   whoWins(): Turn {
       // regarder le score 
       return this.scoresSig().Player1 > this.scoresSig().Player2  ?'Player1' : 'Player2'; 
+  }
+
+  restartGame(){
+    this.gameService.restart();
   }
 
 }
