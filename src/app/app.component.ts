@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, Signal, computed, signal } from '@angular/core';
-import { Matrix, initMatrix, toMatrix } from './data/utils';
+import { ChangeDetectionStrategy, Component, Signal, computed} from '@angular/core';
+import { Matrix, initMatrix} from './data/utils';
 import { Board, BoardtoString, GameState, TileCoords, Turn, cToString } from './data/reversi.definitions';
 import { produce } from 'immer';
 import { whereCanPlay } from './data/reversi.game';
 import { ReversiService } from './reversi.service';
-import { single } from 'rxjs';
 
 
 @Component({
@@ -15,6 +14,7 @@ import { single } from 'rxjs';
 })
 
 export class AppComponent {
+[x: string]: any;
 
   // à compléter
   userInput: TileCoords = [0,0];
@@ -26,7 +26,7 @@ export class AppComponent {
   readonly coupsPossibles: Signal<readonly TileCoords[]>;
   testSignal : Signal<number>;
   testSignalX : Signal<number>;
-
+  boardNgFor: Board;
   constructor(private gameService : ReversiService){
     
     this.strBoard = computed( () => BoardtoString(this.gameService.sigGameState().board)); 
@@ -76,6 +76,8 @@ export class AppComponent {
       boardString: this.strBoard(),
       winner: this.winnerSig()
     }));
+    this.boardNgFor = this.gameStateAll().gameState.board ;
+
 
   }
   currentPlayer(){

@@ -2,12 +2,13 @@
 <!-- rajouter au besoin la class Player1 ou Player2 -->
 <table class="reversi">
     <tbody>
-        <tr *ngFor="let ligne of gameStateAll().gameState.board; index as line" >
-            <td *ngFor="let colonne of ligne; index as column">
+        <tr *ngFor="let row of boardNgFor">
+            <td class="place" *ngFor="let column of row">
                 <div class="token">
-                    
                 </div>
-            </td>
+            </td>  
+           
+            
         </tr>
     </tbody>
     
