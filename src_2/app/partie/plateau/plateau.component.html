@@ -1,0 +1,22 @@
+<table class="reversi" 
+       [class.Player1]="gameState.gameState.turn == 'Player1'"
+       [class.Player2]="gameState.gameState.turn == 'Player2'"
+       >
+
+    <tr *ngFor="let row of vector8">
+        <td *ngFor="let col of vector8" 
+            class="place"
+            [class.playable]="canPlay && gameState.isPlayable[row][col]"
+            (click)="play([row, col])">
+            <div [className]="gameState.gameState.board[row][col]"></div>
+        </td>
+    </tr>
+    <!-- <tr *ngFor="let row of gameState.gameState.board; let rowIndex = index; trackBy: trackByIndex">
+        <td *ngFor="let col of row; let colIndex = index;  trackBy: trackByIndex" 
+            class="place"
+            [class.playable]="gameState.isPlayable.at(rowIndex)?.at(colIndex)"
+            (click)="playDEBUG([rowIndex, colIndex])">
+            <div [className]="col"></div>
+        </td>
+    </tr> -->
+</table>

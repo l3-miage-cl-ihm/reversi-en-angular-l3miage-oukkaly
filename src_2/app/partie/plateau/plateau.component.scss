@@ -27,6 +27,7 @@ $t: .75s;
         &.Player1 {
             background-color: $colorP1;
         }
+
         &.Player2 {
             background-color: $colorP2;
         }
@@ -38,13 +39,13 @@ $t: .75s;
         background: green;
 
         &.Player1 {
-            td.place.playable > div.Empty {
+            td.place.playable>div.Empty {
                 background-color: $colorP1;
             }
         }
 
         &.Player2 {
-            td.place.playable > div.Empty {
+            td.place.playable>div.Empty {
                 background-color: $colorP2;
             }
         }
@@ -65,10 +66,10 @@ $t: .75s;
                 cursor: pointer;
 
                 &.playable {
-                    > div.Empty {
+                    >div.Empty {
                         border: none; // solid black 1px;
                         background-color: lightblue;
-                        width:  calc($divW / 3);
+                        width: calc($divW / 3);
                         height: calc($divW / 3);
                         transition: none;
                         transform: rotateY(0deg);
@@ -76,7 +77,7 @@ $t: .75s;
                     }
                 }
 
-                > div {
+                >div {
                     width: $divW;
                     height: $divW;
                     border-radius: 50%;
