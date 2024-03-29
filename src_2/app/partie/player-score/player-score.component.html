@@ -1,0 +1,16 @@
+<section class="info"> 
+    <strong>Scores :</strong> 
+    <div class="token" 
+        [class.Player1]="player == 'Player1'"
+        [class.Player2]="player == 'Player2'"></div>
+    {{ player == 'Player1' 
+        ? gameState.scores.Player1 
+        : gameState.scores.Player2 
+    }}
+</section>
+<div>
+    Activer le bot player 
+    <input  type="checkbox" 
+            [ngModel]="_isActivated"
+            (ngModelChange) = "changeBotPlayerStatus()">
+</div>
